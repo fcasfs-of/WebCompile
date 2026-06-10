@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebCompile Puro</title>
+    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABQUlEQVR4AeyUTWrCUBSF059hl1HoejoolA7aTbSlv7SD1h90EzoQwYHrEVyKot+noEnMTTLQiSjnvPe895x74JHkPDnw7xRQecHHf0U/3MErjPBGQw1bMcqu6APLL2zDa5jHDYUmVKOW4y6igGek/3ABn+AU5jGhYE+NWj2UsigKUNhBNocPsA8j2FNjiB69GW0+QIFCh9+hHMIqqDFEj15nbDzpABsKZnQdPmavC0P06HWGs1bedMDVqrKfZTMrHeDT0GX+JRzBW1gX9wj16HWGsyglSTrAwguLggt2DRo5lkLNAIUevc7g7xr5AKsKFGrQ+GgxoD01Z/T16OW4RVGAXYUNDhp77NGLZk+NWj1Is4gCVH2y+AL5qYhetHc0f1At2y7KAlR/sfjYsRWiRfUbhqgKCI11G6eAyps6+BUtAQAA///uRa34AAAABklEQVQDAB0LNDHysPgAAAAAAElFTkSuQmCC">
+    <link rel="stylesheet" href="style.css">
+<style>
+
+</style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo">
+            <svg viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+            <h1>WebCompile <span>Pure</span></h1>
+        </div>
+        <div class="project-management">
+            <div class="lang-selector">
+                <button id="btn-lang-pt" class="btn-lang active">PT</button>
+                <button id="btn-lang-en" class="btn-lang">EN</button>
+                <span id="lang-status" class="lang-badge">Idioma: PT</span>
+            </div>
+            <input type="text" id="project-name" placeholder="Nome do Projeto..." value="Meu Projeto">
+            <button id="btn-new" class="btn-dark">
+                <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> <span id="txt-new">Novo</span>
+            </button>
+            <input type="file" id="file-import" accept=".html" style="display:none">
+            <button id="btn-import" class="btn-dark">
+                <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"/></svg> <span id="txt-import-btn">Importar Tudo</span>
+            </button>
+            <button id="btn-run" class="btn-success">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> <span id="txt-run">Executar</span>
+            </button>
+            <button id="btn-save" class="btn-info">
+                <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg> <span id="txt-save">Salvar</span>
+            </button>
+            <button id="btn-export" class="btn-warning">
+                <svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/></svg> <span id="txt-export">Exportar HTML</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="app-container">
+        <aside id="sidebar-section" class="sidebar">
+            <div class="sidebar-label">
+                <div class="label-title">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    <span id="txt-saved-projects">Projetos Salvos</span>
+                </div>
+                <button id="btn-delete-all" class="btn-delete-style">
+                    <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                    <span id="txt-del-all-btn">Limpar Tudo</span>
+                </button>
+            </div>
+            <ul id="project-list" class="project-list"></ul>
+        </aside>
+
+        <section class="editor-area">
+            <div class="editor-box">
+                <div class="editor-label">
+                    <div class="label-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.53c-.26-.81-1-1.4-1.9-1.4h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        HTML
+                    </div>
+                    <div class="label-actions">
+                        <input type="file" id="file-html" accept=".html,.txt" style="display:none">
+                        <button onclick="document.getElementById('file-html').click()" class="btn-inline-label">
+                            <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"/></svg>
+                            <span id="txt-imp-html">Importar HTML</span>
+                        </button>
+                        <button onclick="clearEditor('code-html')" class="btn-inline-label">
+                            <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            <span class="btn-clean-text">Limpar</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="code-container">
+                    <textarea id="code-html" class="editor-input" placeholder="<h1>Olá Mundo</h1>" spellcheck="false"></textarea>
+                </div>
+                <div class="editor-footer"><span id="info-html">0 Linhas | 0 Palavras | 0 B</span></div>
+            </div>
+
+            <div class="editor-box">
+                <div class="editor-label">
+                    <div class="label-title">
+                        <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                        CSS
+                    </div>
+                    <div class="label-actions">
+                        <input type="file" id="file-css" accept=".css,.txt" style="display:none">
+                        <button onclick="document.getElementById('file-css').click()" class="btn-inline-label">
+                            <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"/></svg>
+                            <span id="txt-imp-css">Importar CSS</span>
+                        </button>
+                        <button onclick="clearEditor('code-css')" class="btn-inline-label">
+                            <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            <span class="btn-clean-text">Limpar</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="code-container">
+                    <textarea id="code-css" class="editor-input" placeholder="h1 { color: cyan; }" spellcheck="false"></textarea>
+                </div>
+                <div class="editor-footer"><span id="info-css">0 Linhas | 0 Palavras | 0 B</span></div>
+            </div>
+
+            <div class="editor-box">
+                <div class="editor-label">
+                    <div class="label-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        JavaScript
+                    </div>
+                    <div class="label-actions">
+                        <input type="file" id="file-js" accept=".js,.txt" style="display:none">
+                        <button onclick="document.getElementById('file-js').click()" class="btn-inline-label">
+                            <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"/></svg>
+                            <span id="txt-imp-js">Importar JS</span>
+                        </button>
+                        <button onclick="clearEditor('code-js')" class="btn-inline-label">
+                            <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            <span class="btn-clean-text">Limpar</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="code-container">
+                    <textarea id="code-js" class="editor-input" placeholder="console.log('Alô!');" spellcheck="false"></textarea>
+                </div>
+                <div class="editor-footer"><span id="info-js">0 Linhas | 0 Palavras | 0 B</span></div>
+            </div>
+        </section>
+
+        <section id="preview-section" class="preview-area">
+            <div class="preview-label">
+                <div class="label-title">
+                    <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                    <span id="txt-preview">Resultado em Tempo Real</span>
+                </div>
+                <button id="btn-fullscreen" class="btn-inline-label">
+                    <svg id="icon-fullscreen" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                    <span id="txt-fs-btn">Tela Cheia</span>
+                </button>
+            </div>
+            <iframe id="preview-output"></iframe>
+        </section>
+    </main>
+
+    <div id="container-notify"></div>
+
+
+        <script src="config.js"></script>
+    <script src="i18n.js"></script>
+    <script src="utils.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
