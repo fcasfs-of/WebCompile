@@ -1,0 +1,1 @@
+let currentLang="pt",currentBlobUrl=null,deleteTimeout=null,isConfirmingDelete=!1,activeProjectName=null;const CONFIG={maxNotifications:1,storagePrefix:"wc_",notifyDuration:2500,deleteConfirmDuration:3000,defaultProjectNames:{pt:"Novo Projeto",en:"New Project"}};
